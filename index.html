@@ -12,11 +12,10 @@
 <body>
 
   <div class="container" ng-controller="SmartyStreetsValidation">
-    <form role="form">
+    <form method="POST" role="form">
       <div class="form-group" ng-controller="SmartyStreetsAutocomplete">
         <label for="AddressLine1">Address Line 1</label>
         <input
-          auto-complete
           ui-items="smartyStreetsSuggestions"
           type="text"
           class="form-control"
@@ -24,6 +23,7 @@
           placeholder="Enter Address Line 1"
           ng-model="$parent.addressLine1"
           ng-keypress="doAutoComplete()"
+          autocomplete="off"
         >
         <div ng-repeat="suggestion in smartyStreetsSuggestions.suggestions">
           <span ng-click="autofill(suggestion)">{{ suggestion.text }}</span>
