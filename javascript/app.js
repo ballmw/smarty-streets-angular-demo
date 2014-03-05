@@ -23,6 +23,7 @@ function SmartyStreetsValidation($scope, $resource) {
         state:$scope.state,
         zipcode:$scope.zipCode
       },
+
       function(){
         //Currently assuming non-ambiguous results AND valid results
         $scope.addressLine1 = $scope.smartyStreetsResults[0].delivery_line_1;
