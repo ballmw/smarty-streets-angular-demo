@@ -43,8 +43,21 @@ function SmartyStreetsAutocomplete($scope, $resource) {
     callback:'JSON_CALLBACK'
   },
   {get:{method:'JSONP'}});
+  $scope.setStyle = function() {return {}};
+  $scope.doAutoCompleteSelection = function ($event) {
+    if ($event.keyCode == 9) // Tab key
+    {
+      $scope.smartyStreetsSuggestions.suggestions = "";
+    }
+    else if ($event.keyCode == 40) // Down arrow
+    {
+    }
+    else if ($event.keyCode == 38) // Up arrow
+    {
+    }
+  }
 
-  $scope.doAutoComplete = _.debounce(function () {
+  $scope.doAutoComplete = _.debounce(function ($event) {
     $scope.smartyStreetsSuggestions = $scope.smartyStreets.get(
       {
         prefix:$scope.$parent.addressLine1
@@ -52,11 +65,14 @@ function SmartyStreetsAutocomplete($scope, $resource) {
       function(){
       }
     );
-  }, 500);;
+  }, 250);
+
 
   $scope.autofill = function ($suggestion) {
     $scope.$parent.addressLine1 = $suggestion.street_line
     $scope.$parent.city = $suggestion.city
     $scope.$parent.state = $suggestion.state
+    $scope.smartyStreetsSuggestions.suggestions = "";
+    $scope.$parent.doSearch();
   };
 };

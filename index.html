@@ -8,6 +8,22 @@
   <script src="bower_components/lodash/dist/lodash.min.js"></script>
   <script src="javascript/app.js"></script>
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+  .ngSuggestions {
+    position: absolute;
+    display: block;
+    background: #fff;
+    top: inherit;
+    left: inherit;
+  }
+  .ngSuggestion {
+    display: block;
+    color: #444;
+    text-decoration: none !important;
+    font-size: 12px;
+    padding: 1px 5px;
+  }
+  </style>
 </head>
 <body>
 
@@ -16,19 +32,24 @@
       <div class="form-group" ng-controller="SmartyStreetsAutocomplete">
         <label for="AddressLine1">Address Line 1</label>
         <input
-          ui-items="smartyStreetsSuggestions"
-          type="text"
-          class="form-control"
-          id="AddressLine1"
-          placeholder="Enter Address Line 1"
-          ng-model="$parent.addressLine1"
-          ng-keypress="doAutoComplete()"
-          autocomplete="off"
+        ui-items="smartyStreetsSuggestions"
+        type="text"
+        class="form-control"
+        id="AddressLine1"
+        placeholder="Enter Address Line 1"
+        ng-model="$parent.addressLine1"
+        ng-keyup="doAutoComplete($event)"
+        ng-keydown="doAutoCompleteSelection($event)"
+        autocomplete="off"
         >
-        <div ng-repeat="suggestion in smartyStreetsSuggestions.suggestions">
-          <span ng-click="autofill(suggestion)">{{ suggestion.text }}</span>
-        </br>
-      </div>
+        <ul class="ngSuggestions dropdown-menu" ng-show="smartyStreetsSuggestions.suggestions">
+          <li
+          class="ngSuggestion"
+          ng-repeat="suggestion in smartyStreetsSuggestions.suggestions"
+          ng-click="autofill(suggestion)">
+          <a href="javascript:">{{ suggestion.text }}</a>
+        </li>
+      </ul>
     </div>
     <div class="form-group">
       <label for="AddressLine2">Address Line 2</label>
