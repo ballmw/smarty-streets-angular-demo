@@ -3,10 +3,6 @@
 <head>
   <title>Angular Smarty Street Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="bower_components/angular/angular.min.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.min.js"></script>
-  <script src="bower_components/lodash/dist/lodash.min.js"></script>
-  <script src="javascript/app.js"></script>
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
   <style>
   .ngSuggestions {
@@ -27,41 +23,34 @@
 </head>
 <body>
 
-  <div class="container" ng-controller="SmartyStreetsValidation">
-    <form method="POST" role="form">
-      <div class="form-group" ng-controller="SmartyStreetsAutocomplete">
+  <div class="container">
+    <form method="POST" role="form" ng-controller="FormController">
+      <div class="form-group">
         <label for="AddressLine1">Address Line 1</label>
         <input
-        ui-items="smartyStreetsSuggestions"
+        autocomplete="off"
         type="text"
         class="form-control"
         id="AddressLine1"
+        ng-model="address.addressLine1"
+        data-animation="am-flip-x"
+        ng-options="address.text for address in getAddress($viewValue)"
         placeholder="Enter Address Line 1"
-        ng-model="$parent.addressLine1"
-        ng-keyup="doAutoComplete($event)"
-        ng-keydown="doAutoCompleteSelection($event)"
-        autocomplete="off"
+        bs-typeahead
+        ng-blur="populateFields()"
         >
-        <ul class="ngSuggestions dropdown-menu" ng-show="smartyStreetsSuggestions.suggestions">
-          <li
-          class="ngSuggestion"
-          ng-repeat="suggestion in smartyStreetsSuggestions.suggestions"
-          ng-click="autofill(suggestion)">
-          <a href="javascript:">{{ suggestion.text }}</a>
-        </li>
-      </ul>
     </div>
     <div class="form-group">
       <label for="AddressLine2">Address Line 2</label>
-      <input autocomplete="on" type="text" class="form-control" id="AddressLine2" placeholder="Enter Address Line 2" ng-model="addressLine2">
+      <input autocomplete="on" type="text" class="form-control" id="AddressLine2" placeholder="Enter Address Line 2" ng-model="address.addressLine2">
     </div>
     <div class="form-group">
       <label for="City">City</label>
-      <input autocomplete="on" type="text" class="form-control" id="City" placeholder="Enter City" ng-model="city">
+      <input autocomplete="on" type="text" class="form-control" id="City" placeholder="Enter City" ng-model="address.city">
     </div>
     <div class="form-group">
       <label for="State">State</label>
-      <select autocomplete="on" class="form-control" name="State" id="State" ng-model="state">
+      <select autocomplete="on" class="form-control" name="State" id="State" ng-model="address.state">
         <option></option>
         <option value="OH">Ohio</option>
         <option value="KY">Kentucky</option>
@@ -118,13 +107,17 @@
     </div>
     <div class="form-group">
       <label for="Zip Code">Zip Code</label>
-      <input autocomplete="on" type="text" class="form-control" id="Zip Code" placeholder="Zip Code" ng-model="zipCode">
+      <input autocomplete="on" type="text" class="form-control" id="Zip Code" placeholder="Zip Code" ng-model="address.zipCode">
     </div>
     <button type="submit" class="btn btn-default" ng-click="doSearch()">Submit</button>
   </form>
-  <ul ng-repeat="result in smartyStreetsResults">
-    <li>Result: {{result.delivery_line_1}}</li>
-  </ul>
 </div>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/lodash/dist/lodash.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="javascript/app.js"></script>
 </body>
 </html>

@@ -1,7 +1,37 @@
-var SmartyStreets = angular.module('SmartyStreets', ['ngResource']);
+var SmartyStreets = angular.module('SmartyStreets', ['ngResource','mgcrea.ngStrap.typeahead']);
 
-function SmartyStreetsValidation($scope, $resource) {
-  $scope.smartyStreets = $resource('https://api.smartystreets.com/street-address',
+/*
+ * FACTORIES
+ */
+
+SmartyStreets.factory('SmartyStreetsSuggestionFactory',function($resource, $q) {
+  var smartyStreets = $resource('https://autocomplete-api.smartystreets.com/suggest',
+  {
+    'auth-id':'5041104821260679536',
+    prefix:'1600 Amphitheatre Parkway',
+    callback:'JSON_CALLBACK'
+  },
+  {get:{method:'JSONP'}});
+
+  getSuggestions = function (suggestion) {
+    var defer = $q.defer();
+    smartyStreets.get(
+      {
+        prefix:suggestion
+      },
+      function(result){
+        defer.resolve(result);
+      }
+    );
+    return defer.promise;
+  };
+  return {
+    getSuggestions : getSuggestions
+  };
+});
+
+SmartyStreets.factory('SmartyStreetsValidationFactory',function($resource, $q) {
+  var smartyStreets = $resource('https://api.smartystreets.com/street-address',
   {
     'auth-token':'5041104821260679536',
     street:'1600 Amphitheatre Parkway',
@@ -14,65 +44,55 @@ function SmartyStreetsValidation($scope, $resource) {
   },
   {get:{method:'JSONP',isArray:true}});
 
-  $scope.doSearch = function () {
-    $scope.smartyStreetsResults = $scope.smartyStreets.get(
+  doValidation = function ($scope) {
+    var defer = $q.defer();
+    smartyStreets.get(
       {
-        street:$scope.addressLine1,
-        street2:$scope.addressLine2,
-        city:$scope.city,
-        state:$scope.state,
-        zipcode:$scope.zipCode
+        street:$scope.address.addressLine1,
+        street2:$scope.address.addressLine2,
+        city:$scope.address.city,
+        state:$scope.address.state,
+        zipcode:$scope.address.zipCode
       },
-
-      function(){
-        //Currently assuming non-ambiguous results AND valid results
-        $scope.addressLine1 = $scope.smartyStreetsResults[0].delivery_line_1;
-        $scope.city = $scope.smartyStreetsResults[0].components.city_name;
-        $scope.state = $scope.smartyStreetsResults[0].components.state_abbreviation;
-        $scope.zipCode = $scope.smartyStreetsResults[0].components.zipcode + '-' + $scope.smartyStreetsResults[0].components.plus4_code;
+      function(result){
+        defer.resolve(result);
       }
     );
+    return defer.promise;
   };
-}
-
-function SmartyStreetsAutocomplete($scope, $resource) {
-  $scope.smartyStreets = $resource('https://autocomplete-api.smartystreets.com/suggest',
-  {
-    'auth-id':'5041104821260679536',
-    prefix:'1600 Amphitheatre Parkway',
-    callback:'JSON_CALLBACK'
-  },
-  {get:{method:'JSONP'}});
-  $scope.setStyle = function() {return {}};
-  $scope.doAutoCompleteSelection = function ($event) {
-    if ($event.keyCode == 9) // Tab key
-    {
-      $scope.smartyStreetsSuggestions.suggestions = "";
-    }
-    else if ($event.keyCode == 40) // Down arrow
-    {
-    }
-    else if ($event.keyCode == 38) // Up arrow
-    {
-    }
-  }
-
-  $scope.doAutoComplete = _.debounce(function ($event) {
-    $scope.smartyStreetsSuggestions = $scope.smartyStreets.get(
-      {
-        prefix:$scope.$parent.addressLine1
-      },
-      function(){
-      }
-    );
-  }, 250);
-
-
-  $scope.autofill = function ($suggestion) {
-    $scope.$parent.addressLine1 = $suggestion.street_line
-    $scope.$parent.city = $suggestion.city
-    $scope.$parent.state = $suggestion.state
-    $scope.smartyStreetsSuggestions.suggestions = "";
-    $scope.$parent.doSearch();
+  return {
+    doValidation : doValidation
   };
-};
+});
+
+/*
+ * CONTROLLERS
+ */
+SmartyStreets.controller('FormController', function($scope, SmartyStreetsSuggestionFactory, SmartyStreetsValidationFactory) {
+  $scope.address = '';
+  $scope.getAddress = function(searchString){
+    return SmartyStreetsSuggestionFactory.getSuggestions(searchString).then(function(result){
+      return result.suggestions;
+    });
+  };
+
+  $scope.populateFields = function(){
+    $scope.address.city = $scope.address.addressLine1.city;
+    $scope.address.state = $scope.address.addressLine1.state;
+    $scope.address.addressLine1 = $scope.address.addressLine1.street_line;
+    $scope.validateAddress();
+  };
+
+  //CONSIDER MOVING STATE HERE
+  //make it a typeahead, with validation
+
+  $scope.validateAddress = function(){
+    return SmartyStreetsValidationFactory.doValidation($scope).then(function(result){
+      //HANDLE AMBIGUIOUS RESULTS
+      $scope.address.addressLine1 = result[0].delivery_line_1;
+      $scope.address.city = result[0].components.city_name;
+      $scope.address.state = result[0].components.state_abbreviation;
+      $scope.address.zipCode = result[0].components.zipcode + '-' + result[0].components.plus4_code;
+    });
+  };
+});

@@ -16,8 +16,10 @@
     "tests"
   ],
   "dependencies": {
-    "angular-resource": "~1.2.9",
-    "angular": "~1.2.9",
-    "lodash": "~2.4.1"
+    "angular-resource": "~1.2.12",
+    "angular-animate": "~1.2.12",
+    "angular": "~1.2.12",
+    "lodash": "~2.4.1",
+    "angular-strap": "~2.0.0"
   }
 }
