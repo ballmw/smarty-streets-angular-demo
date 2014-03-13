@@ -1,10 +1,13 @@
-var SmartyStreets = angular.module('SmartyStreets', ['ngResource','mgcrea.ngStrap.typeahead']);
+angular.module('org.crossroads.smartyStreets.services', ['ngResource']);
+angular.module('org.crossroads.smartyStreets.controllers', ['org.crossroads.smartyStreets.services','mgcrea.ngStrap.typeahead']);
+angular.module('org.crossroads.smartyStreets.directives', ['org.crossroads.smartyStreets.controllers']);
+angular.module('org.crossroads.smartyStreets',['org.crossroads.smartyStreets.services','org.crossroads.smartyStreets.controllers','org.crossroads.smartyStreets.directives']);
 
 /*
  * FACTORIES
  */
 
-SmartyStreets.factory('SmartyStreetsSuggestionFactory',function($resource, $q) {
+angular.module('org.crossroads.smartyStreets.services').factory('SmartyStreetsSuggestionFactory',function($resource, $q) {
   var smartyStreets = $resource('https://autocomplete-api.smartystreets.com/suggest',
   {
     'auth-id':'5041104821260679536',
@@ -28,9 +31,8 @@ SmartyStreets.factory('SmartyStreetsSuggestionFactory',function($resource, $q) {
   return {
     getSuggestions : getSuggestions
   };
-});
-
-SmartyStreets.factory('SmartyStreetsValidationFactory',function($resource, $q) {
+})
+.factory('SmartyStreetsValidationFactory',function($resource, $q) {
   var smartyStreets = $resource('https://api.smartystreets.com/street-address',
   {
     'auth-token':'5041104821260679536',
@@ -44,15 +46,15 @@ SmartyStreets.factory('SmartyStreetsValidationFactory',function($resource, $q) {
   },
   {get:{method:'JSONP',isArray:true}});
 
-  doValidation = function ($scope) {
+  doValidation = function (address) {
     var defer = $q.defer();
     smartyStreets.get(
       {
-        street:$scope.address.addressLine1,
-        street2:$scope.address.addressLine2,
-        city:$scope.address.city,
-        state:$scope.address.state,
-        zipcode:$scope.address.zipCode
+        street:address.addressLine1,
+        street2:address.addressLine2,
+        city:address.city,
+        state:address.state,
+        zipcode:address.zipCode
       },
       function(result){
         defer.resolve(result);
@@ -68,8 +70,8 @@ SmartyStreets.factory('SmartyStreetsValidationFactory',function($resource, $q) {
 /*
  * CONTROLLERS
  */
-SmartyStreets.controller('FormController', function($scope, SmartyStreetsSuggestionFactory, SmartyStreetsValidationFactory) {
-  $scope.address = '';
+angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFormController',
+function($scope, SmartyStreetsSuggestionFactory, SmartyStreetsValidationFactory) {
   $scope.getAddress = function(searchString){
     return SmartyStreetsSuggestionFactory.getSuggestions(searchString).then(function(result){
       return result.suggestions;
@@ -77,22 +79,53 @@ SmartyStreets.controller('FormController', function($scope, SmartyStreetsSuggest
   };
 
   $scope.populateFields = function(){
-    $scope.address.city = $scope.address.addressLine1.city;
-    $scope.address.state = $scope.address.addressLine1.state;
-    $scope.address.addressLine1 = $scope.address.addressLine1.street_line;
-    $scope.validateAddress();
+    console.log($scope.addressSearchResult);
+    $scope.address.city = $scope.addressSearchResult.city;
+    $scope.address.state = $scope.addressSearchResult.state;
+    $scope.address.addressLine1 = $scope.addressSearchResult.street_line;
+    $scope.addressSearchResult = $scope.addressSearchResult.street_line;
   };
 
-  //CONSIDER MOVING STATE HERE
+  //CONSIDER MOVING STATE (as in OHIO) HERE
   //make it a typeahead, with validation
 
   $scope.validateAddress = function(){
-    return SmartyStreetsValidationFactory.doValidation($scope).then(function(result){
-      //HANDLE AMBIGUIOUS RESULTS
+    return SmartyStreetsValidationFactory.doValidation($scope.address).then(function(result){
+      //HANDLE AMBIGUIOUS RESULTS - consider angular-strap model
+      $scope.addressSearchResult = result[0].delivery_line_1;
       $scope.address.addressLine1 = result[0].delivery_line_1;
       $scope.address.city = result[0].components.city_name;
       $scope.address.state = result[0].components.state_abbreviation;
       $scope.address.zipCode = result[0].components.zipcode + '-' + result[0].components.plus4_code;
     });
+  };
+
+  $scope.$watch('address.state',function(newValue,oldValue){
+    if(newValue !== oldValue){
+      $scope.validateAddress();
+    }
+  },true);
+
+});
+
+angular.module('org.crossroads.smartyStreets.directives').directive('crdsValidatedAddress', function(){
+  return {
+    restrict: 'E',
+    scope: {
+      address: '='
+    },
+    controller: 'AddressFormController',
+    templateUrl: 'templates/address-form.html'
+  };
+});
+
+angular.module('CrossroadsUserForm', ['org.crossroads.smartyStreets'])
+.controller('CrossroadsUserFormController', function($scope){
+  $scope.form = {
+    address: {}
+  };
+  $scope.submit = function(){
+    //Call Service to revalidate
+
   };
 });
