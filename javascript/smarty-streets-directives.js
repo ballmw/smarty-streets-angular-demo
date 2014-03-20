@@ -11,7 +11,7 @@ angular.module('org.crossroads.smartyStreets.directives').directive('crdsValidat
       address: '='
     },
     controller: 'AddressFormController',
-    templateUrl: 'templates/address-form.tpl.html'
+    templateUrl: '/templates/address-form.tpl.html'
   };
 });
 

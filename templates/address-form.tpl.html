@@ -13,7 +13,7 @@
   ng-blur="populateFields()"
   >
 </div>
-<input autocomplete="on" type="text" class="form-control" id="AddressLine1" placeholder="Enter Address Line 1" ng-model="address.addressLine1">
+<input autocomplete="on" type="text" disabled class="form-control" id="AddressLine1" placeholder="Enter Address Line 1" ng-model="address.addressLine1">
 <div class="form-group">
 <label for="AddressLine2">Address Line 2</label>
 <input autocomplete="on" type="text" class="form-control" id="AddressLine2" placeholder="Enter Address Line 2" ng-model="address.addressLine2">
@@ -83,3 +83,9 @@
 <label for="Zip Code">Zip Code</label>
 <input autocomplete="on" type="text" class="form-control" id="Zip Code" placeholder="Zip Code" ng-model="address.zipCode">
 </div>
+
+<script type="text/ng-template">
+    <div style="{'yada'}">
+        <span></span>
+    </div>
+</script>

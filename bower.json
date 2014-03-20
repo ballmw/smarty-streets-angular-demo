@@ -1,25 +1,28 @@
 {
-  "name": "crdschurch-smarty-streets-angular-demo",
-  "version": "0.0.1",
-  "authors": [
-    "Dan Rye <drye@crossroads.net>"
-  ],
-  "description": "Demo of angular Smarty Streets integration",
-  "license": "MIT",
-  "homepage": "crdschurch.github.io/experiemnts/smartystreets/",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "angular-resource": "~1.2.12",
-    "angular-animate": "~1.2.12",
-    "angular": "~1.2.12",
-    "lodash": "~2.4.1",
-    "angular-strap": "~2.0.0"
-  }
+    "name": "crdschurch-smarty-streets-angular-demo",
+    "version": "0.0.1",
+    "authors": [
+        "Dan Rye <drye@crossroads.net>"
+    ],
+    "description": "Demo of angular Smarty Streets integration",
+    "license": "MIT",
+    "homepage": "crdschurch.github.io/experiemnts/smartystreets/",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "angular-resource": "1.2.12",
+        "angular-animate": "1.2.12",
+        "angular": "1.2.12",
+        "lodash": "~2.4.1",
+        "angular-strap": "~2.0.0"
+    },
+    "devDependencies": {
+        "angular-mocks": "1.2.12"
+    }
 }
