@@ -2,41 +2,50 @@ h1. Purpose
 
 yada
 
-h1. Build
+Build
+=====
 
-h2. System requirements
-h3. Install npm
+System requirements
+-------------------
 
-h3. Install bower
+### Install npm
 
-h3. Install grunt
+### Install bower
 
-h2. Pull dependencies
+### Install grunt
+
+Pull dependencies
+-----------------
 
 ```
 npm install
 bower install
 ```
 
-h2. Run tests and package
+Run tests and package
+---------------------
 
 ```
 grunt
 ```
 
-h1. Distribution
+Distribution
+------------
 
 smarty-streets.min.js
 
-h1. Publish to bower
+Publish to bower
+----------------
+TODO
 
-h1.TODO
+TODO
+====
 * .gitignore
 * karma
-** server tests
-** controller tests
-** directive testing?
-** code coverage
+    * server tests
+    * controller tests
+    * directive testing?
+    * code coverage
 * protractor
 * readme
 * jslint config
