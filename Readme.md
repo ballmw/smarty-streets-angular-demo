@@ -1,6 +1,6 @@
-h1. Purpose
-
-yada
+Purpose
+=======
+Provide reusable services and directives for Smarty Streets address completion and validation.
 
 Build
 =====
