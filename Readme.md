@@ -8,11 +8,11 @@ Build
 System requirements
 -------------------
 
-### Install npm
+1.  Install npm
 
-### Install bower
+1.  Install bower
 
-### Install grunt
+1.  Install grunt
 
 Pull dependencies
 -----------------
