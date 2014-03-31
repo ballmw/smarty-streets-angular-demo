@@ -1,9 +1,13 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: '../..',
 
         frameworks: ['jasmine'],
+
+        preprocessors: {
+            'javascript/*.js': 'coverage'
+        },
 
         // list of files / patterns to load in the browser
         files: [
@@ -21,7 +25,12 @@ module.exports = function(config) {
         // use dots reporter, as travis terminal does not support escaping sequences
         // possible values: 'dots', 'progress'
         // CLI --reporters progress
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
+
+        coverageReporter: {
+            type: 'html',
+            dir: 'coverage/'
+        },
 
         // web server port
         // CLI --port 9876
@@ -49,7 +58,7 @@ module.exports = function(config) {
         // - PhantomJS
         // - IE (only Windows)
         // CLI --browsers Chrome,Firefox,Safari
-        browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+        browsers: ['Chrome'],
 
         // If browser does not capture in given timeout [ms], kill it
         // CLI --capture-timeout 5000
@@ -57,7 +66,7 @@ module.exports = function(config) {
 
         // Auto run tests on start (when browsers are captured) and exit
         // CLI --single-run --no-single-run
-        singleRun: false,
+        singleRun: true,
 
         // report which specs are slower than 500ms
         // CLI --report-slower-than 500
@@ -69,7 +78,8 @@ module.exports = function(config) {
             'karma-firefox-launcher',
             'karma-phantomjs-launcher',
             'karma-junit-reporter',
-            'karma-commonjs'
+            'karma-commonjs',
+            'karma-coverage'
         ]
     });
 };
