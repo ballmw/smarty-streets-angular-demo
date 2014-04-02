@@ -77,9 +77,25 @@ module.exports = function (grunt) {
                 configFile: 'test/config/karma.mocks.conf.js',
                 background: false
             }
+        },
+        protractor: {
+            options: {
+                configFile: 'node_modules/protractor/referenceConf.js', // Default config file
+                keepAlive: true, // If false, the grunt process stops when the test fails.
+                noColor: false, // If true, protractor will not use colors in its output.
+                args: {
+                    // Arguments passed to the command
+                }
+            },
+            test: {
+                configFile: 'test/config/protractor.conf.js', // Target-specific config file
+                options: {
+                    args: {
+                        verbose:true
+                    } // Target-specific arguments
+                }
+            }
         }
-        //,
-        //karma: {},
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -90,6 +106,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-protractor-runner');
+
+    grunt.registerTask('e2e', ['protractor:test']);
 
     grunt.registerTask('default', ["karma", "clean", "copy:before", "ngtemplates:app", "concat:dist", "ngmin:dist", "uglify:dist"]);
 

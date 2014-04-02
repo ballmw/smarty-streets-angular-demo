@@ -1,42 +1,46 @@
 {
-    "name": "smarty-streets-angular-demo",
-    "version": "0.0.1",
-    "description": "org.crossroads.smartyStreets",
-    "main": "Gruntfile.js",
-    "module": "org.crossroads.smartyStreets",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/crdschurch/smarty-streets-angular-demo.git"
-    },
-    "author": "Dan Rye",
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "https://github.com/crdschurch/crdschurch.github.io/blob/master/LICENSE"
-        }
-    ],
-    "devDependencies": {
-        "grunt": "~0.4.2",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-ngmin": "0.0.3",
-        "grunt-contrib-uglify": "~0.2.7",
-        "grunt-contrib-clean": "~0.5.0",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-angular-templates": "~0.5.3",
-        "grunt-contrib-watch": "~0.5.3",
-        "grunt-text-replace": "~0.3.10",
-        "grunt-contrib-connect": "~0.6.0",
-        "grunt-karma": "~0.8.0",
-        "karma": "~0.12.0",
-        "karma-jasmine": "~0.1.5",
-        "karma-chrome-launcher": "~0.1.2",
-        "karma-phantomjs-launcher": "~0.1.2",
-        "karma-firefox-launcher": "~0.1.2",
-        "karma-commonjs": "~0.0.6",
-        "karma-coverage": "~0.2.1",
-        "karma-junit-reporter": "~0.2.1"
+  "name": "smarty-streets-angular-demo",
+  "version": "0.0.1",
+  "description": "org.crossroads.smartyStreets",
+  "main": "Gruntfile.js",
+  "module": "org.crossroads.smartyStreets",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crdschurch/smarty-streets-angular-demo.git"
+  },
+  "author": "Dan Rye",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/crdschurch/crdschurch.github.io/blob/master/LICENSE"
     }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-ngmin": "0.0.3",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-angular-templates": "~0.5.3",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-text-replace": "~0.3.10",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-karma": "~0.8.0",
+    "karma": "~0.12.0",
+    "karma-jasmine": "~0.1.5",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "karma-firefox-launcher": "~0.1.2",
+    "karma-commonjs": "~0.0.6",
+    "karma-coverage": "~0.2.1",
+    "karma-junit-reporter": "~0.2.1",
+    "protractor": "~0.20.1",
+    "grunt-protractor-runner": "~0.2.4",
+    "selenium": "~2.20.0",
+    "chromedriver": "~2.9.0"
+  }
 }
