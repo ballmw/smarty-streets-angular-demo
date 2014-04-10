@@ -46,15 +46,17 @@ angular.module('org.crossroads.smartyStreets.services').factory('SmartyStreetsSu
       });
     var doValidation = function (address) {
       var defer = $q.defer();
-      var promise = smartyStreets.get({
-          street: address.addressLine1,
-          street2: address.addressLine2,
-          city: address.city,
-          state: address.state,
-          zipcode: address.zipCode
-        }, function (result) {
-          defer.resolve(result);
-        });
+      smartyStreets.get({
+        street: address.street_line,
+        street2: address.addressLine2,
+        city: address.city,
+        state: address.state,
+        zipcode: address.zipCode
+      }, function (result) {
+        defer.resolve(result);
+      }, function (error) {
+        defer.reject(error);
+      });
       return defer.promise;
     };
     return { doValidation: doValidation };
@@ -72,34 +74,49 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
   'SmartyStreetsSuggestionFactory',
   'SmartyStreetsValidationFactory',
   function ($scope, SmartyStreetsSuggestionFactory, SmartyStreetsValidationFactory) {
+    $scope.address = {};
+    $scope.addresses = [];
     $scope.getAddress = function (searchString) {
-      return SmartyStreetsSuggestionFactory.getSuggestions(searchString).then(function (result) {
-        return result.suggestions;
-      });
+      if (searchString != null && searchString != '') {
+        return SmartyStreetsSuggestionFactory.getSuggestions(searchString).then(function (result) {
+          $scope.addresses = result.suggestions;
+          if (result.suggestions.length == 1) {
+            $scope.address = result.suggestions[0];
+            return [];
+          } else {
+            return result.suggestions;
+          }
+        });
+      }
     };
     $scope.$on('$typeahead.select', function (event, address, index) {
-      $scope.address = address;
-      $scope.populateFields();
+      $scope.address = $scope.addresses[index];
     });
-    $scope.populateFields = function () {
-      $scope.address.city = $scope.addressSearchResult.city;
-      $scope.address.state = $scope.addressSearchResult.state;
-      $scope.address.addressLine1 = $scope.addressSearchResult.street_line;
-      $scope.addressSearchResult = $scope.addressSearchResult.street_line;
-    };
+    /*
+        $scope.populateFields = function () {
+            $scope.address.city = $scope.addressSearchResult.city;
+            $scope.address.state = $scope.addressSearchResult.state;
+            $scope.address.addressLine1 = $scope.addressSearchResult.street_line;
+            //$scope.addressSearchResult = $scope.addressSearchResult.street_line;
+        };
+        */
     //CONSIDER MOVING STATE (as in OHIO) HERE
     //make it a typeahead, with validation
     $scope.validateAddress = function () {
       return SmartyStreetsValidationFactory.doValidation($scope.address).then(function (result) {
-        //HANDLE AMBIGUIOUS RESULTS - consider angular-strap model
-        $scope.addressSearchResult = result[0].delivery_line_1;
-        $scope.address.addressLine1 = result[0].delivery_line_1;
-        $scope.address.city = result[0].components.city_name;
-        $scope.address.state = result[0].components.state_abbreviation;
-        $scope.address.zipCode = result[0].components.zipcode + '-' + result[0].components.plus4_code;
+        if (angular.isArray(result) && result.length > 0) {
+          //HANDLE AMBIGUIOUS RESULTS - consider angular-strap model
+          //$scope.addressSearchResult = result[0].delivery_line_1;
+          $scope.address.street_line = result[0].delivery_line_1;
+          $scope.address.city = result[0].components.city_name;
+          $scope.address.state = result[0].components.state_abbreviation;
+          $scope.address.zipCode = result[0].components.zipcode + '-' + result[0].components.plus4_code;
+        }
+      }, function (error) {
+        console.log('got an error in validation');
       });
     };
-    $scope.$watch('address.state', function (newValue, oldValue) {
+    $scope.$watch('address', function (newValue, oldValue) {
       if (newValue !== oldValue) {
         $scope.validateAddress();
       }
