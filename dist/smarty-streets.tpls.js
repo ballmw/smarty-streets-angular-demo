@@ -11,10 +11,9 @@ angular.module('org.crossroads.smartyStreets.templates', []).run(['$templateCach
     "  id=\"AddressSearch\"\n" +
     "  ng-model=\"addressSearchResult\"\n" +
     "  data-animation=\"am-flip-x\"\n" +
-    "  ng-options=\"result.text for result in getAddress($viewValue)\"\n" +
+    "  ng-options=\"result as result.text for result in getAddress($viewValue)\"\n" +
     "  placeholder=\"Enter Address Line 1\"\n" +
     "  bs-typeahead\n" +
-    "  ng-blur=\"populateFields()\"\n" +
     "  >\n" +
     "</div>\n" +
     "<input autocomplete=\"on\" type=\"text\" disabled class=\"form-control\" id=\"AddressLine1\" placeholder=\"Enter Address Line 1\" ng-model=\"address.addressLine1\">\n" +

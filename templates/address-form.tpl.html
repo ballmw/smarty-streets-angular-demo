@@ -7,10 +7,9 @@
   id="AddressSearch"
   ng-model="addressSearchResult"
   data-animation="am-flip-x"
-  ng-options="result.text for result in getAddress($viewValue)"
+  ng-options="result as result.text for result in getAddress($viewValue)"
   placeholder="Enter Address Line 1"
   bs-typeahead
-  ng-blur="populateFields()"
   >
 </div>
 <input autocomplete="on" type="text" disabled class="form-control" id="AddressLine1" placeholder="Enter Address Line 1" ng-model="address.addressLine1">

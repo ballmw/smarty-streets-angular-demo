@@ -44,17 +44,17 @@ angular.module('org.crossroads.smartyStreets.services').factory('SmartyStreetsSu
           isArray: true
         }
       });
-    doValidation = function (address) {
+    var doValidation = function (address) {
       var defer = $q.defer();
-      smartyStreets.get({
-        street: address.addressLine1,
-        street2: address.addressLine2,
-        city: address.city,
-        state: address.state,
-        zipcode: address.zipCode
-      }, function (result) {
-        defer.resolve(result);
-      });
+      var promise = smartyStreets.get({
+          street: address.addressLine1,
+          street2: address.addressLine2,
+          city: address.city,
+          state: address.state,
+          zipcode: address.zipCode
+        }, function (result) {
+          defer.resolve(result);
+        });
       return defer.promise;
     };
     return { doValidation: doValidation };
@@ -77,8 +77,11 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
         return result.suggestions;
       });
     };
+    $scope.$on('$typeahead.select', function (event, address, index) {
+      $scope.address = address;
+      $scope.populateFields();
+    });
     $scope.populateFields = function () {
-      console.log($scope.addressSearchResult);
       $scope.address.city = $scope.addressSearchResult.city;
       $scope.address.state = $scope.addressSearchResult.state;
       $scope.address.addressLine1 = $scope.addressSearchResult.street_line;

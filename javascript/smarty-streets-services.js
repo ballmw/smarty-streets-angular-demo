@@ -43,7 +43,7 @@ angular.module('org.crossroads.smartyStreets.services').factory('SmartyStreetsSu
   },
   {get:{method:'JSONP',isArray:true}});
 
-  doValidation = function (address) {
+  var doValidation = function (address) {
     var defer = $q.defer();
     smartyStreets.get(
       {

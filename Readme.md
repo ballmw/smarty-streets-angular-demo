@@ -16,6 +16,9 @@ System requirements
 
 1.  Install protractor for e2e tests
 
+npm install protractor
+webdriver-manager update --standalone
+
 Pull dependencies
 -----------------
 
@@ -37,6 +40,12 @@ Run e2e tests
 ```
 webdriver-manager start
 ```
+
+1.  Build the project
+```
+grunt default
+```
+
 1.  Start the dev server
 ```
 grunt connect:dev
