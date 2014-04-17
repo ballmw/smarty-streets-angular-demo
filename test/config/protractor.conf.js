@@ -2,7 +2,7 @@
 exports.config = {
     // The address of a running selenium server.
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    baseUrl:'http://localhost:8081',
+    baseUrl:'http://localhost:8081/',
     chromeDriver: 'node_modules/chromedriver/bin/chromedriver',
 
     // Capabilities to be passed to the webdriver instance.

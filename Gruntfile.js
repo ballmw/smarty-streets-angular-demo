@@ -91,7 +91,8 @@ module.exports = function (grunt) {
                 configFile: 'test/config/protractor.conf.js', // Target-specific config file
                 options: {
                     args: {
-                        verbose:true
+                        verbose:true,
+                        debug:true
                     } // Target-specific arguments
                 }
             }
