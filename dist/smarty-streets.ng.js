@@ -92,16 +92,6 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
     $scope.$on('$typeahead.select', function (event, address, index) {
       $scope.address = $scope.addresses[index];
     });
-    /*
-        $scope.populateFields = function () {
-            $scope.address.city = $scope.addressSearchResult.city;
-            $scope.address.state = $scope.addressSearchResult.state;
-            $scope.address.addressLine1 = $scope.addressSearchResult.street_line;
-            //$scope.addressSearchResult = $scope.addressSearchResult.street_line;
-        };
-        */
-    //CONSIDER MOVING STATE (as in OHIO) HERE
-    //make it a typeahead, with validation
     $scope.validateAddress = function () {
       return SmartyStreetsValidationFactory.doValidation($scope.address).then(function (result) {
         if (angular.isArray(result) && result.length > 0) {

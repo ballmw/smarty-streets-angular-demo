@@ -10,7 +10,7 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
 
         $scope.addresses = [];
         $scope.getAddress = function (searchString) {
-            if(searchString != null && searchString != '') {
+            if (searchString != null && searchString != '') {
                 return SmartyStreetsSuggestionFactory.getSuggestions(searchString)
                     .then(function (result) {
                         $scope.addresses = result.suggestions;
@@ -24,25 +24,13 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
             }
         };
 
-        $scope.$on('$typeahead.select', function(event, address, index){
+        $scope.$on('$typeahead.select', function (event, address, index) {
             $scope.address = $scope.addresses[index];
         });
 
-        /*
-        $scope.populateFields = function () {
-            $scope.address.city = $scope.addressSearchResult.city;
-            $scope.address.state = $scope.addressSearchResult.state;
-            $scope.address.addressLine1 = $scope.addressSearchResult.street_line;
-            //$scope.addressSearchResult = $scope.addressSearchResult.street_line;
-        };
-        */
-
-        //CONSIDER MOVING STATE (as in OHIO) HERE
-        //make it a typeahead, with validation
-
         $scope.validateAddress = function () {
             return SmartyStreetsValidationFactory.doValidation($scope.address).then(function (result) {
-                if(angular.isArray(result) && result.length > 0 ) {
+                if (angular.isArray(result) && result.length > 0) {
                     //HANDLE AMBIGUIOUS RESULTS - consider angular-strap model
                     //$scope.addressSearchResult = result[0].delivery_line_1;
                     $scope.address.street_line = result[0].delivery_line_1;
@@ -50,7 +38,7 @@ angular.module('org.crossroads.smartyStreets.controllers').controller('AddressFo
                     $scope.address.state = result[0].components.state_abbreviation;
                     $scope.address.zipCode = result[0].components.zipcode + '-' + result[0].components.plus4_code;
                 }
-            }, function(error){
+            }, function (error) {
                 console.log('got an error in validation');
             });
         };
