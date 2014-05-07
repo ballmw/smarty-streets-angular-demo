@@ -1,3 +1,5 @@
+![Codeship Status](https://www.codeship.io/projects/c9caeb90-b859-0131-02c8-46a883e0c128/status)
+
 Purpose
 =======
 Provide reusable services and directives for Smarty Streets address completion and validation.
