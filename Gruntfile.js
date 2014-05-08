@@ -113,5 +113,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ["karma", "clean", "copy:before", "ngtemplates:app", "concat:dist", "ngmin:dist", "uglify:dist"]);
 
+    grunt.registerTask('test', ["karma", "clean", "copy:before", "ngtemplates:app", "concat:dist", "ngmin:dist", "uglify:dist"]);
+
 
 };
